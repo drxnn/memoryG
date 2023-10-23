@@ -20,17 +20,18 @@ const tileCount = colorsList.length;
 //create all tiles and display on dom, assign color to them randomly
 
 for (let i = 0; i < tileCount; i++) {
-  const newDiv = document.createElement("div");
+  const tileElement = document.createElement("div");
   let randomIndex = Math.floor(Math.random() * colorsList.length);
 
-  newDiv.setAttribute("class", "tile");
+  tileElement.setAttribute("class", "tile");
   const color = colorsList[randomIndex];
 
-  newDiv.setAttribute("data-color", color);
+  tileElement.setAttribute("data-color", color);
 
   colorsList.splice(randomIndex, 1);
 
-  tilesContainer.append(newDiv);
+  tilesContainer.append(tileElement);
+  tileElement.addEventListener("click", checkTile);
 }
 
 console.log(colorsList);
@@ -39,7 +40,27 @@ console.log(colorsList);
 // Game States: we need 3 variables, how many tiles have been revealed, starts at 0 tiles revealed, activeTile
 let revealedCount = 0;
 let activeTile = null;
+let secondElement = null;
 let awaitingEndOfMove = false;
+
+function checkTile(e) {
+  if (awaitingEndOfMove === true) {
+    return;
+  }
+  // active tile is first element, secondElement is second element
+  let clickedElement = e.target;
+  if (!activeTile) {
+    activeTile = clickedElement.getAttribute("data-color");
+  } else {
+    secondElement = clickedElement.getAttribute("data-color");
+    clickedElement.style.backgroundColor = secondElement;
+  }
+
+  if (activeTile === secondElement) {
+    clickedElement.style.backgroundColor = "#333333";
+  }
+  console.log(activeTile, secondElement);
+}
 
 // in the for loop, get a randomIndex and apply the color from the colorsList to the newly created Divs
 // when a color is added to the tile, remove that color from the list using .splie() so that we dont get the same color twice
