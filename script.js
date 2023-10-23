@@ -17,12 +17,41 @@ const colorsList = [...colors, ...colors];
 
 const tileCount = colorsList.length;
 
-//create all tiles and display on dom :
+//create all tiles and display on dom, assign color to them randomly
 
 for (let i = 0; i < tileCount; i++) {
   const newDiv = document.createElement("div");
+  let randomIndex = Math.floor(Math.random() * colorsList.length);
+
   newDiv.setAttribute("class", "tile");
+  const color = colorsList[randomIndex];
+
+  newDiv.setAttribute("data-color", color);
+
+  colorsList.splice(randomIndex, 1);
+
   tilesContainer.append(newDiv);
 }
 
 console.log(colorsList);
+
+// GUIDE LINE
+// Game States: we need 3 variables, how many tiles have been revealed, starts at 0 tiles revealed, activeTile
+let revealedCount = 0;
+let activeTile = null;
+let awaitingEndOfMove = false;
+
+// in the for loop, get a randomIndex and apply the color from the colorsList to the newly created Divs
+// when a color is added to the tile, remove that color from the list using .splie() so that we dont get the same color twice
+// add event Listener to the tile and pass function that checks if awaitingEndOfMove is true just return, do not allow the user to do anything for a second or two, otherwise reveal color
+// if !activeTile, activeTile = element(tile) & then return function, active tile has to be the first element clicked so that we can compare if the colors of first element and second element are the same
+//if users 2 choices dont match = awaitingEndOfMove = true;
+// use a setTimeout function(), element && activeTile . background color == null, because user was wrong so we need to set the tiles back to the black color, then put awaitingEndOfMove = false and activeTile = null so that user can click again
+// activeTile = first Tile clicked, element = second tile click
+// Then check if what the user clicked are matching colors, if they are, remove the two tiles from the dom, revealedCount += 2, if the revealedCount === tileCount(display winning message)
+// if 2 tiles match, add a data-message of "data-revealed"= true, if data-revealed === true, user cannot click again on the same tile, because it has been revealed(put this at the top of the function, simple if statement)
+// also make it so user cannot click on the same tile again, something like element === activeTile{return})
+// if user removes all tiles, he wins
+// display winning message at the end
+//
+//
