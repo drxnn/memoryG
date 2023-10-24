@@ -3,7 +3,7 @@ const tilesContainer = document.querySelector(".tiles");
 const colors = [
   "aqua",
   "aquamarine",
-  "crimson",
+  "teal",
   "blue",
   "gold",
   "red",
@@ -51,13 +51,41 @@ function checkTile(e) {
   let clickedElement = e.target;
   if (!activeTile) {
     activeTile = clickedElement.getAttribute("data-color");
+    clickedElement.style.backgroundColor = activeTile;
+    console.log(activeTile);
   } else {
     secondElement = clickedElement.getAttribute("data-color");
     clickedElement.style.backgroundColor = secondElement;
+    console.log(secondElement);
   }
 
   if (activeTile === secondElement) {
-    clickedElement.style.backgroundColor = "#333333";
+    let elements = document.querySelectorAll(`[data-color=${activeTile}]`);
+    // console.log(firstEl);
+    elements.forEach((x) => {
+      x.style.backgroundColor = "#333333";
+      x.style.border = "none";
+      let colorToRemove = x.getAttribute("data-color");
+      //   loop to remove the selected color :
+
+      activeTile = null;
+      secondElement = null;
+
+      revealedCount += 1;
+      console.log(revealedCount);
+    });
+  } else if (activeTile !== secondElement) {
+    // const elementToRemove = document.querySelectorAll(
+    //   `[data-color=${activeTile}]`
+    // );
+    // elementToRemove.forEach((x) => {
+    //   console.log(x);
+    //   x.style.backgroundColor = "darkgrey";
+    // });
+  }
+
+  if (revealedCount >= 16) {
+    // code to display winning message
   }
   console.log(activeTile, secondElement);
 }
